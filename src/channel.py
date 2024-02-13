@@ -9,11 +9,8 @@ import isodate
 # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
 api_key = os.environ.get('API_KEY')
 
-
 # создать специальный объект для работы с API
 youtube = build('youtube', 'v3', developerKey=api_key)
-
-
 
 
 class Channel:
@@ -30,14 +27,48 @@ class Channel:
         subscriber_count --- количество подписчиков
         video_count --- количество видео
         views_count --- общее количество просмотров"""
-        self.channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
-        self.id = self.channel["items"][0]["id"]
-        self.title = self.channel["items"][0]["snippet"]["title"]
-        self.description = self.channel["items"][0]["snippet"]["description"]
-        self.url = "https://www.youtube.com/" + self.channel["items"][0]["snippet"]["customUrl"] if self.channel["items"][0]["snippet"]["customUrl"] else "https://www.youtube.com/channel/" + self.id
-        self.subscriber_count = self.channel['items'][0]['statistics']['subscriberCount']
-        self.video_count = self.channel['items'][0]['statistics']['videoCount']
-        self.views_count = self.channel['items'][0]['statistics']['viewCount']
+        self.__channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
+        self.__channel_id = self.__channel["items"][0]["id"]
+        self.__title = self.__channel["items"][0]["snippet"]["title"]
+        self.__description = self.__channel["items"][0]["snippet"]["description"]
+        self.__url = "https://www.youtube.com/" + self.__channel["items"][0]["snippet"]["customUrl"] if \
+            self.__channel["items"][0]["snippet"]["customUrl"] \
+            else "https://www.youtube.com/channel/" + self.__channel_id
+        self.__subscriber_count = self.__channel['items'][0]['statistics']['subscriberCount']
+        self.__video_count = self.__channel['items'][0]['statistics']['videoCount']
+        self.__views_count = self.__channel['items'][0]['statistics']['viewCount']
+
+    @property
+    def channel(self):
+        return self.__channel
+
+    @property
+    def channel_id(self):
+        return self.__channel_id
+
+    @property
+    def title(self):
+        return self.__title
+
+    @property
+    def description(self):
+        return self.__description
+
+    @property
+    def url(self):
+        return self.__url
+
+    @property
+    def subscriber_count(self):
+        return self.__subscriber_count
+
+    @property
+    def video_count(self):
+        return self.__video_count
+
+    @property
+    def views_count(self):
+        return self.__views_count
 
     @staticmethod
     def printj(dict_to_print: dict) -> None:
@@ -46,7 +77,7 @@ class Channel:
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        Channel.printj(self.channel)
+        Channel.printj(self.__channel)
 
     @classmethod
     def get_service(cls):
@@ -54,7 +85,6 @@ class Channel:
 
     def to_json(self, filename):
         pass
-
 
 # moscowpython = Channel('UC-OVMPlMA3-YCIeg4z5z23A')
 # moscowpython.print_info()
