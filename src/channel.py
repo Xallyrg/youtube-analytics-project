@@ -10,7 +10,9 @@ import isodate
 api_key = os.environ.get('API_KEY')
 
 # создать специальный объект для работы с API
-youtube = build('youtube', 'v3', developerKey=api_key)
+# youtube = build('youtube', 'v3', developerKey=api_key)
+# поскольку у меня теперь есть Channel.get_service(), то я могу создавать эту специальную переменную сразу внутри класса
+
 
 
 class Channel:
@@ -27,7 +29,8 @@ class Channel:
         subscriber_count --- количество подписчиков
         video_count --- количество видео
         views_count --- общее количество просмотров"""
-        self.__channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
+        # self.__channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
+        self.__channel = Channel.get_service().channels().list(id=channel_id, part='snippet,statistics').execute()
         self.__channel_id = self.__channel["items"][0]["id"]
         self.__title = self.__channel["items"][0]["snippet"]["title"]
         self.__description = self.__channel["items"][0]["snippet"]["description"]
@@ -110,6 +113,8 @@ class Channel:
 # print('')
 # print(moscowpython.channel["items"][0]["snippet"]["customUrl"])
 
+# youtube = Channel.get_service()
+
 # channel_id = 'UC-OVMPlMA3-YCIeg4z5z23A'  # MoscowPython
 # channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
-# printj(channel)
+# Channel.printj(channel)
