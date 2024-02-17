@@ -37,9 +37,34 @@ class Channel:
         self.__url = "https://www.youtube.com/" + self.__channel["items"][0]["snippet"]["customUrl"] if \
             self.__channel["items"][0]["snippet"]["customUrl"] \
             else "https://www.youtube.com/channel/" + self.__channel_id
-        self.__subscriber_count = self.__channel['items'][0]['statistics']['subscriberCount']
-        self.__video_count = self.__channel['items'][0]['statistics']['videoCount']
-        self.__views_count = self.__channel['items'][0]['statistics']['viewCount']
+        self.__subscriber_count = int(self.__channel['items'][0]['statistics']['subscriberCount'])
+        self.__video_count = int(self.__channel['items'][0]['statistics']['videoCount'])
+        self.__views_count = int(self.__channel['items'][0]['statistics']['viewCount'])
+
+    def __str__(self):
+        return f"{self.__title} ({self.__url})"
+        # 'MoscowPython (https://www.youtube.com/channel/UC-OVMPlMA3-YCIeg4z5z23A)'
+
+    def __add__(self, other):
+        return self.__subscriber_count + other.__subscriber_count
+
+    def __sub__(self, other):
+        return self.__subscriber_count - other.__subscriber_count
+
+    def __lt__(self, other):
+        return self.__subscriber_count < other.__subscriber_count
+
+    def __le__(self, other):
+        return self.__subscriber_count <= other.__subscriber_count
+
+    def __gt__(self, other):
+        return self.__subscriber_count > other.__subscriber_count
+
+    def __ge__(self, other):
+        return self.__subscriber_count >= other.__subscriber_count
+
+    def __eq__(self, other):
+        return self.__subscriber_count == other.__subscriber_count
 
     @property
     def channel(self):
@@ -118,3 +143,18 @@ class Channel:
 # channel_id = 'UC-OVMPlMA3-YCIeg4z5z23A'  # MoscowPython
 # channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
 # Channel.printj(channel)
+
+
+# moscowpython = Channel('UC-OVMPlMA3-YCIeg4z5z23A')
+# highload = Channel('UCwHL6WHUarjGfUM_586me8w')
+#
+# # Используем различные магические методы
+# print(moscowpython)  # 'MoscowPython (https://www.youtube.com/channel/UC-OVMPlMA3-YCIeg4z5z23A)'
+# print(moscowpython + highload)  # 100100
+# print(moscowpython - highload)  # -48300
+# print(highload - moscowpython)  # 48300
+# print(moscowpython > highload)  # False
+# print(moscowpython >= highload)  # False
+# print(moscowpython < highload)  # True
+# print(moscowpython <= highload)  # True
+# print(moscowpython == highload)  # False
