@@ -92,3 +92,21 @@ class PlayList:
                 link = f'https://youtu.be/{video["id"]}'
 
         return link
+
+
+pl = PlayList('PLv_zOGKKxVpj-n2qLkEM2Hj96LO6uqgQw')
+# print(pl)
+# print(repr(pl))
+# print(pl.title)
+# print(pl.description)
+# print(pl.url)
+# print(pl.video_count)
+# print(json.dumps(pl.playlist_videos, indent=2, ensure_ascii=False))
+# print(pl.total_duration)
+# print(pl.show_best_video())
+
+
+# print(pl.show_best_video())
+
+#
+# assert pl.show_best_video() == "https://youtu.be/cUGyMzWQcGM"
