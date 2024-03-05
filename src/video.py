@@ -42,14 +42,24 @@ class Video:
         view_count --- количество просмотров
         like_count --- количество лайков
         comment_count --- количество комментариев"""
-        self.__video = Channel.get_service().videos().list(part='snippet,statistics,contentDetails,topicDetails',id=video_id).execute()
-        self.__video_id = video_id
-        self.__video_title = self.__video['items'][0]['snippet']['title']
-        self.__description = self.__video['items'][0]['snippet']['description']
-        self.__url = f'https://www.youtube.com/watch?v={self.__video_id}'
-        self.__view_count = int(self.__video['items'][0]['statistics']['viewCount'])
-        self.__like_count = int(self.__video['items'][0]['statistics']['likeCount'])
-        self.__comment_count = int(self.__video['items'][0]['statistics']['commentCount'])
+        try:
+            self.__video = Channel.get_service().videos().list(part='snippet,statistics,contentDetails,topicDetails',id=video_id).execute()
+            self.__video_id = video_id
+            self.__video_title = self.__video['items'][0]['snippet']['title']
+            self.__description = self.__video['items'][0]['snippet']['description']
+            self.__url = f'https://www.youtube.com/watch?v={self.__video_id}'
+            self.__view_count = int(self.__video['items'][0]['statistics']['viewCount'])
+            self.__like_count = int(self.__video['items'][0]['statistics']['likeCount'])
+            self.__comment_count = int(self.__video['items'][0]['statistics']['commentCount'])
+        except:
+            self.__video = None
+            self.__video_id = video_id
+            self.__video_title = None
+            self.__description = None
+            self.__url = None
+            self.__view_count = None
+            self.__like_count = None
+            self.__comment_count = None
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.__video_id})'
@@ -143,7 +153,17 @@ class PLVideo(Video):
         return f'{self.__class__.__name__}({self.video_id}, {self.__playlist_id})'
 
 
-video2 = PLVideo('4fObz_qw9u4', 'PLv_zOGKKxVph_8g2Mqc3LMhj0M_BfasbC')
+
+# broken_video = Video('broken_video_id')
+# print(broken_video.video_title)
+# print(broken_video.video_id)
+# print(broken_video.like_count)
+# print(broken_video.comment_count)
+
+# assert broken_video.video_title is None
+# assert broken_video.like_count is None
+
+# video2 = PLVideo('4fObz_qw9u4', 'PLv_zOGKKxVph_8g2Mqc3LMhj0M_BfasbC')
 # Channel.printj(video2.video)
 # print(video2.video_title)
 # print(video2.description)
